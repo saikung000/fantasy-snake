@@ -22,7 +22,15 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
     private void MoveHero(MoveType type)
     {
         if (CheckCanMove(type, currentControlHero.currentMove))
+        {
+
+            for (int i = playerData.collectedHero.Count-1; i > 0; i--)
+            {
+                playerData.collectedHero[i].Move(playerData.collectedHero[i-1].currentMove);
+                Debug.Log(i);
+            }
             currentControlHero.Move(type);
+        }
         else
         {
 

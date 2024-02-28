@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class HeroView : MonoBehaviour
 {
     public MoveType currentMove = MoveType.Up;
@@ -10,10 +9,19 @@ public class HeroView : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        RandomColor();
     }
 
-    // Update is called once per frame
+    private void RandomColor()
+    {
+        Color randomColor = UnityEngine.Random.ColorHSV();
+        foreach (var meshRenderer in GetComponentsInChildren<MeshRenderer>())
+        {
+            meshRenderer.material.color = randomColor;
+        }
+    }
+
+    
     void Update()
     {
 
