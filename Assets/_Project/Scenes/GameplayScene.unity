@@ -730,9 +730,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322cc0888de27854e92557d0ba277656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentControlHero: {fileID: 0}
-  playerInputView: {fileID: 0}
-  playerData: {fileID: 0}
+  currentControlHero: {fileID: 1899317015}
+  playerInputView: {fileID: 1480050980}
+  playerData: {fileID: 1480050982}
 --- !u!1 &1899317012
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,6 +742,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1899317014}
+  - component: {fileID: 1899317015}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Untagged
@@ -766,6 +767,18 @@ Transform:
   - {fileID: 828928167}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1899317015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899317012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d290ee4d10fb8cb48a284718e3ffd4bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1902373458
 PrefabInstance:
   m_ObjectHideFlags: 0

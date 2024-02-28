@@ -8,14 +8,16 @@ public class PlayerInputView : MonoBehaviour
 {
     public PlayerInput playerInput;
 
-
+    public Action<MoveType> onMove;
+    public Action onNextHero;
+    public Action onPreviousHero;
 
     void Awake()
     {
         playerInput = new PlayerInput();
-        playerInput.gameplay.move.performed += OnMove;
-        playerInput.gameplay.nextHero.performed += OnNextHero;
-        playerInput.gameplay.previousHero.performed += OnPreviousHero;
+        playerInput.gameplay.move.performed += Move;
+        playerInput.gameplay.nextHero.performed += NextHero;
+        playerInput.gameplay.previousHero.performed += PreviousHero;
     }
 
     void OnEnable()
@@ -29,21 +31,24 @@ public class PlayerInputView : MonoBehaviour
     }
 
 
-    private void OnMove(InputAction.CallbackContext context)
+    private void Move(InputAction.CallbackContext context)
     {
         MoveType move = MapInputVectorToMoveType(context.ReadValue<Vector2>());
         if (move == MoveType.NoInput) return;
         Debug.Log("move : " + move);
+        onMove?.Invoke(move);
     }
 
-    private void OnNextHero(InputAction.CallbackContext context)
+    private void NextHero(InputAction.CallbackContext context)
     {
         Debug.Log("next Hero");
+        onNextHero?.Invoke();
     }
 
-    private void OnPreviousHero(InputAction.CallbackContext context)
+    private void PreviousHero(InputAction.CallbackContext context)
     {
         Debug.Log("previous Hero");
+        onPreviousHero?.Invoke();
     }
 
     private MoveType MapInputVectorToMoveType(Vector2 inputVector)
@@ -64,13 +69,4 @@ public class PlayerInputView : MonoBehaviour
     }
 
 
-}
-
-public enum MoveType
-{
-    Up,
-    Down,
-    Left,
-    Right,
-    NoInput
 }
