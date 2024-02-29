@@ -16,14 +16,13 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         playerInputView.onMove = (MoveType type) => MoveHero(type);
         playerInputView.onNextHero = () => NextHero();
         playerInputView.onPreviousHero = () => PreviousHero();
-        currentControlHero.OnControlHero();
     }
 
 
 
     private void MoveHero(MoveType type)
     {
-        if (CheckCanMove(type, currentControlHero.currentMove))
+        if (CheckCanMove(type, currentControlHero.currentMove) && GameManager.Instance.gameState == GameState.PlayerTurn)
         {
             CheckMoveTo(type);
         }
@@ -47,6 +46,8 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
             Move(type);
             heroView.MoveFollow(playerData.collectedHero.Last());
             playerData.AddHero(heroView);
+            heroView.transform.SetParent(transform);
+            MapSpawnerView.Instance.RemoveCollectHero(heroView);
 
         }
         else if (hit.CompareTag("Enemy"))
@@ -92,7 +93,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         List<HeroView> heroViewList = playerData.collectedHero;
         if (heroViewList.Count <= 1) return;
 
-        currentControlHero.OnNotControlHero();
+        currentControlHero.NotControlHero();
 
         Vector3 tempLastPosition = heroViewList[0].transform.position;
         MoveType tempLastCurrentMove = heroViewList[0].currentMove;
@@ -106,7 +107,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
 
 
         currentControlHero = playerData.SwapPreviousHero();
-        currentControlHero.OnControlHero();
+        currentControlHero.ControlHero();
 
     }
 
@@ -115,7 +116,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         List<HeroView> heroViewList = playerData.collectedHero;
         if (heroViewList.Count <= 1) return;
 
-        currentControlHero.OnNotControlHero();
+        currentControlHero.NotControlHero();
 
         Vector3 tempLastPosition = heroViewList.Last().transform.position;
         MoveType tempLastCurrentMove = heroViewList.Last().currentMove;
@@ -130,7 +131,24 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
 
 
         currentControlHero = playerData.SwapNextHero();
-        currentControlHero.OnControlHero();
+        currentControlHero.ControlHero();
     }
 
+    public void AddHero(HeroView heroView)
+    {
+        currentControlHero = heroView;
+        heroView.transform.SetParent(transform);
+        playerData.collectedHero.Add(heroView);
+        currentControlHero.Collected();
+        currentControlHero.ControlHero();
+    }
+
+    public void Reset()
+    {
+        playerData.collectedHero.Clear();
+        foreach (GameObject child in transform)
+        {
+            Destroy(child);
+        }
+    }
 }

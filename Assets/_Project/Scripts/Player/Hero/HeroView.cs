@@ -25,7 +25,7 @@ public class HeroView : MonoBehaviour
 
     void Awake()
     {
-        OnNotControlHero();
+        NotControlHero();
         RandomColor();
     }
 
@@ -38,14 +38,21 @@ public class HeroView : MonoBehaviour
     public void Collected()
     {
         this.tag = "Hero";
+        foreach (var meshRenderer in GetComponentsInChildren<MeshRenderer>())
+        {
+            Color modelColor = meshRenderer.material.color;
+            modelColor.a = 1;
+            meshRenderer.material.color = modelColor;
+        }
+
     }
 
-    public void OnControlHero()
+    public void ControlHero()
     {
         isControlHero = true;
         faceDirObject.gameObject.SetActive(true);
     }
-    public void OnNotControlHero()
+    public void NotControlHero()
     {
         isControlHero = false;
         faceDirObject.gameObject.SetActive(false);
@@ -54,6 +61,7 @@ public class HeroView : MonoBehaviour
     private void RandomColor()
     {
         Color randomColor = UnityEngine.Random.ColorHSV();
+        randomColor.a = 0.5f;
         foreach (var meshRenderer in GetComponentsInChildren<MeshRenderer>())
         {
             meshRenderer.material.color = randomColor;
