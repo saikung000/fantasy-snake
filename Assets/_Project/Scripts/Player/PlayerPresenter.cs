@@ -25,18 +25,50 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
     {
         if (CheckCanMove(type, currentControlHero.currentMove))
         {
-            for (int i = playerData.collectedHero.Count - 1; i > 0; i--)
-            {
-                playerData.collectedHero[i].Move(playerData.collectedHero[i - 1].currentMove);
-                Debug.Log(i);
-            }
-            currentControlHero.Move(type);
+            CheckMoveTo(type);
         }
-        else
+    }
+
+    private void CheckMoveTo(MoveType type)
+    {
+        GameObject hit = currentControlHero.CheckMove(type);
+        if (hit == null)
+        {
+            Move(type);
+        }
+        else if (hit.CompareTag("Obstacle") || hit.CompareTag("Hero"))
+        {
+            GameManager.Instance.CheckToGameOver();
+        }
+        else if (hit.CompareTag("CollectHero"))
+        {
+            HeroView heroView = hit.GetComponent<HeroView>();
+            heroView.Collected();
+            Move(type);
+            heroView.MoveFollow(playerData.collectedHero.Last());
+            playerData.AddHero(heroView);
+
+        }
+        else if (hit.CompareTag("Enemy"))
         {
 
         }
+        else
+        {
+            Move(type);
+        }
     }
+
+    private void Move(MoveType type)
+    {
+        for (int i = playerData.collectedHero.Count - 1; i > 0; i--)
+        {
+            playerData.collectedHero[i].Move(playerData.collectedHero[i - 1].currentMove);
+        }
+        currentControlHero.Move(type);
+    }
+
+
 
     private bool CheckCanMove(MoveType type, MoveType currentMove)
     {
@@ -60,9 +92,11 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         List<HeroView> heroViewList = playerData.collectedHero;
         if (heroViewList.Count <= 1) return;
 
+        currentControlHero.OnNotControlHero();
+
         Vector3 tempLastPosition = heroViewList[0].transform.position;
         MoveType tempLastCurrentMove = heroViewList[0].currentMove;
-        for (int i = 0; i < heroViewList.Count -1; i++)
+        for (int i = 0; i < heroViewList.Count - 1; i++)
         {
             int swapIndex = i + 1;
             Debug.Log(i + ":" + swapIndex);
@@ -71,14 +105,8 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         heroViewList.Last().ChangePosition(tempLastPosition, tempLastCurrentMove);
 
 
-
-
-        currentControlHero.OnNotControlHero();
-        HeroView current = heroViewList[heroViewList.Count - 1];
-        heroViewList.Remove(current);
-        heroViewList.Insert(0, current);
-        currentControlHero = heroViewList[0];
-        current.OnControlHero();
+        currentControlHero = playerData.SwapPreviousHero();
+        currentControlHero.OnControlHero();
 
     }
 
@@ -87,9 +115,11 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         List<HeroView> heroViewList = playerData.collectedHero;
         if (heroViewList.Count <= 1) return;
 
+        currentControlHero.OnNotControlHero();
+
         Vector3 tempLastPosition = heroViewList.Last().transform.position;
         MoveType tempLastCurrentMove = heroViewList.Last().currentMove;
-        for (int i = playerData.collectedHero.Count - 1; i > 0; i--)
+        for (int i = heroViewList.Count - 1; i > 0; i--)
         {
             int swapIndex = i - 1;
             Debug.Log(i + ":" + swapIndex);
@@ -99,13 +129,8 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
 
 
 
-        currentControlHero = heroViewList[1];
+        currentControlHero = playerData.SwapNextHero();
         currentControlHero.OnControlHero();
-        HeroView current = heroViewList[0];
-        heroViewList.RemoveAt(0);
-        current.OnNotControlHero();
-        playerData.collectedHero.Add(current);
-
     }
 
 }

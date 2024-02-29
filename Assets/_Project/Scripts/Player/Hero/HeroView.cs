@@ -6,12 +6,13 @@ public class HeroView : MonoBehaviour
 {
     public MoveType currentMove = MoveType.Up;
     public GameObject faceDirObject;
+    public bool isControlHero = false;
     private Dictionary<MoveType, Vector3> moveDirectionDict = new Dictionary<MoveType, Vector3>()
     {
-        {MoveType.Up, Vector2.up},
-        {MoveType.Down, Vector2.down},
-        {MoveType.Left, Vector2.left},
-        {MoveType.Right, Vector2.right},
+        {MoveType.Up, Vector3.forward},
+        {MoveType.Down, Vector3.back},
+        {MoveType.Left, Vector3.left},
+        {MoveType.Right, Vector3.right},
     };
 
     private Dictionary<MoveType, Quaternion> rotateDict = new Dictionary<MoveType, Quaternion>()
@@ -32,15 +33,21 @@ public class HeroView : MonoBehaviour
     void Start()
     {
 
-        
+    }
+
+    public void Collected()
+    {
+        this.tag = "Hero";
     }
 
     public void OnControlHero()
     {
+        isControlHero = true;
         faceDirObject.gameObject.SetActive(true);
     }
     public void OnNotControlHero()
     {
+        isControlHero = false;
         faceDirObject.gameObject.SetActive(false);
     }
 
@@ -56,15 +63,27 @@ public class HeroView : MonoBehaviour
 
     void Update()
     {
+        if (isControlHero)
+            Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), moveDirectionDict[currentMove] * 1, Color.yellow);
+    }
 
+    public GameObject CheckMove(MoveType type)
+    {
+        if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), moveDirectionDict[type], out RaycastHit hit, 1))
+        {
+            Debug.Log("Did Hit : " + hit.collider.gameObject.name + ":" + hit.collider.tag);
+            return hit.collider.gameObject;
+        }
+        else
+            return null;
     }
 
     public void Move(MoveType type)
     {
         currentMove = type;
-        Vector2 dir = moveDirectionDict[type];
+        Vector3 dir = moveDirectionDict[type];
         Quaternion rotateTo = rotateDict[type];
-        Vector3 newPosition = transform.position + new Vector3(dir.x, 0, dir.y);
+        Vector3 newPosition = transform.position + dir;
         transform.position = newPosition;
         transform.rotation = rotateTo;
 
@@ -84,5 +103,14 @@ public class HeroView : MonoBehaviour
         transform.position = tempLastPosition;
         Quaternion rotateTo = rotateDict[currentMove];
         transform.rotation = rotateTo;
+    }
+
+    public void MoveFollow(HeroView heroView)
+    {
+        transform.position = heroView.transform.position - moveDirectionDict[heroView.currentMove];
+        currentMove = heroView.currentMove;
+        Quaternion rotateTo = rotateDict[currentMove];
+        transform.rotation = rotateTo;
+
     }
 }

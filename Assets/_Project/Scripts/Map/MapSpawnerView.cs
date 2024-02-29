@@ -29,17 +29,17 @@ public class MapSpawnerView : MonoBehaviour
 
         for (int x = 0; x <= gridX; x++)
         {
-            Vector3 positionWallBottom = new Vector3(x + startPositionX, 0, startPositionZ - 1);
+            Vector3 positionWallBottom = new Vector3(x + startPositionX, 0.5f, startPositionZ - 1);
             Instantiate(wall, positionWallBottom, Quaternion.identity, transform);
-            Vector3 positionWallTop = new Vector3(x + startPositionX - 1, 0, gridZ + startPositionZ);
+            Vector3 positionWallTop = new Vector3(x + startPositionX - 1, 0.5f, gridZ + startPositionZ);
             Instantiate(wall, positionWallTop, Quaternion.identity, transform);
         }
 
         for (int z = 0; z <= gridZ; z++)
         {
-            Vector3 positionWallLeft = new Vector3(startPositionX -1 , 0, z  + startPositionZ - 1);
+            Vector3 positionWallLeft = new Vector3(startPositionX -1 , 0.5f, z  + startPositionZ - 1);
             Instantiate(wall, positionWallLeft, Quaternion.identity, transform);
-            Vector3 positionWallRight = new Vector3(gridX + startPositionX, 0, z + startPositionZ);
+            Vector3 positionWallRight = new Vector3(gridX + startPositionX, 0.5f, z + startPositionZ);
             Instantiate(wall, positionWallRight, Quaternion.identity, transform);
         }
     }
