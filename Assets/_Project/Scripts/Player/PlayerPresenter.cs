@@ -52,7 +52,13 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         }
         else if (hit.CompareTag("Enemy"))
         {
-
+            EnemyPresenter enemyPresenter = hit.GetComponent<EnemyPresenter>();
+            int heroAtk = currentControlHero.GetAttack();
+            int enemyAtk = enemyPresenter.GetAttack();
+            currentControlHero.TakeDamage(enemyAtk);
+            enemyPresenter.TakeDamage(heroAtk);
+            enemyPresenter.RotateTo(type);
+            currentControlHero.ChangeDirection(type);
         }
         else
         {

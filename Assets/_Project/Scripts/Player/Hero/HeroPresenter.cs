@@ -73,4 +73,14 @@ public class HeroPresenter : MonoBehaviour
         ChangeDirection(targetHero.currentDirection);
         heroView.MoveToFollowTarget(targetHero);
     }
+
+    public void TakeDamage(int damage)
+    {
+        characterData.TakeDamage(damage);
+    }
+
+    public int GetAttack()
+    {
+        return characterData.attack;
+    }
 }
