@@ -9,8 +9,7 @@ public class GameManager : MonoInstance<GameManager>
     public int score = 0;
     public Action onGameOver;
     public Action onMenu;
-    public Action onPlayerTurn;
-    public Action onEnemyTurn;
+    public Action onGameplay;
 
     void Start()
     {
@@ -33,7 +32,6 @@ public class GameManager : MonoInstance<GameManager>
 public enum GameState
 {
     Menu,
-    PlayerTurn,
-    EnemyTurn,
+    Gameplay,
     GameOver,
 }

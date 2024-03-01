@@ -6,29 +6,29 @@ using UnityEngine;
 
 public class PlayerPresenter : MonoInstance<PlayerPresenter>
 {
-    [SerializeField] private HeroView currentControlHero;
+    [SerializeField] private HeroPresenter currentControlHero;
     [SerializeField] private PlayerInputView playerInputView;
     [SerializeField] private PlayerData playerData;
 
 
     void Start()
     {
-        playerInputView.onMove = (MoveType type) => MoveHero(type);
+        playerInputView.onMove = (DirectionType type) => MoveHero(type);
         playerInputView.onNextHero = () => NextHero();
         playerInputView.onPreviousHero = () => PreviousHero();
     }
 
 
 
-    private void MoveHero(MoveType type)
+    private void MoveHero(DirectionType type)
     {
-        if (CheckCanMove(type, currentControlHero.currentMove) && GameManager.Instance.gameState == GameState.PlayerTurn)
+        if (CheckCanMove(type, currentControlHero.currentDirection) && GameManager.Instance.gameState == GameState.Gameplay)
         {
             CheckMoveTo(type);
         }
     }
 
-    private void CheckMoveTo(MoveType type)
+    private void CheckMoveTo(DirectionType type)
     {
         GameObject hit = currentControlHero.CheckMove(type);
         if (hit == null)
@@ -41,13 +41,13 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         }
         else if (hit.CompareTag("CollectHero"))
         {
-            HeroView heroView = hit.GetComponent<HeroView>();
-            heroView.Collected();
+            HeroPresenter heroPresenter = hit.GetComponent<HeroPresenter>();
+            heroPresenter.Collected();
             Move(type);
-            heroView.MoveFollow(playerData.collectedHero.Last());
-            playerData.AddHero(heroView);
-            heroView.transform.SetParent(transform);
-            MapSpawnerView.Instance.RemoveCollectHero(heroView);
+            heroPresenter.MoveToFollowTarget(playerData.collectedHero.Last());
+            playerData.AddHero(heroPresenter);
+            heroPresenter.transform.SetParent(transform);
+            MapSpawnerView.Instance.RemoveCollectHero(heroPresenter);
 
         }
         else if (hit.CompareTag("Enemy"))
@@ -60,28 +60,28 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         }
     }
 
-    private void Move(MoveType type)
+    private void Move(DirectionType type)
     {
         for (int i = playerData.collectedHero.Count - 1; i > 0; i--)
         {
-            playerData.collectedHero[i].Move(playerData.collectedHero[i - 1].currentMove);
+            playerData.collectedHero[i].Move(playerData.collectedHero[i - 1].currentDirection);
         }
         currentControlHero.Move(type);
     }
 
 
 
-    private bool CheckCanMove(MoveType type, MoveType currentMove)
+    private bool CheckCanMove(DirectionType type, DirectionType currentMove)
     {
         switch (type)
         {
-            case MoveType.Up when currentMove == MoveType.Down:
+            case DirectionType.Up when currentMove == DirectionType.Down:
                 return false;
-            case MoveType.Down when currentMove == MoveType.Up:
+            case DirectionType.Down when currentMove == DirectionType.Up:
                 return false;
-            case MoveType.Left when currentMove == MoveType.Right:
+            case DirectionType.Left when currentMove == DirectionType.Right:
                 return false;
-            case MoveType.Right when currentMove == MoveType.Left:
+            case DirectionType.Right when currentMove == DirectionType.Left:
                 return false;
             default:
                 return true;
@@ -90,13 +90,13 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
 
     private void PreviousHero()
     {
-        List<HeroView> heroViewList = playerData.collectedHero;
+        List<HeroPresenter> heroViewList = playerData.collectedHero;
         if (heroViewList.Count <= 1) return;
 
         currentControlHero.NotControlHero();
 
         Vector3 tempLastPosition = heroViewList[0].transform.position;
-        MoveType tempLastCurrentMove = heroViewList[0].currentMove;
+        DirectionType tempLastCurrentMove = heroViewList[0].currentDirection;
         for (int i = 0; i < heroViewList.Count - 1; i++)
         {
             int swapIndex = i + 1;
@@ -113,13 +113,13 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
 
     private void NextHero()
     {
-        List<HeroView> heroViewList = playerData.collectedHero;
+        List<HeroPresenter> heroViewList = playerData.collectedHero;
         if (heroViewList.Count <= 1) return;
 
         currentControlHero.NotControlHero();
 
         Vector3 tempLastPosition = heroViewList.Last().transform.position;
-        MoveType tempLastCurrentMove = heroViewList.Last().currentMove;
+        DirectionType tempLastCurrentMove = heroViewList.Last().currentDirection;
         for (int i = heroViewList.Count - 1; i > 0; i--)
         {
             int swapIndex = i - 1;
@@ -134,7 +134,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         currentControlHero.ControlHero();
     }
 
-    public void AddHero(HeroView heroView)
+    public void AddHero(HeroPresenter heroView)
     {
         currentControlHero = heroView;
         heroView.transform.SetParent(transform);

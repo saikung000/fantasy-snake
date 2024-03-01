@@ -1,4 +1,4 @@
-public enum MoveType
+public enum DirectionType
 {
     Up,
     Down,

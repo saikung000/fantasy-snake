@@ -4,35 +4,27 @@ using System.Collections.Generic;
 using UnityEngine;
 public class HeroView : MonoBehaviour
 {
-    public MoveType currentMove = MoveType.Up;
     public GameObject faceDirObject;
     public bool isControlHero = false;
-    private Dictionary<MoveType, Vector3> moveDirectionDict = new Dictionary<MoveType, Vector3>()
+    private Dictionary<DirectionType, Vector3> moveDirectionDict = new Dictionary<DirectionType, Vector3>()
     {
-        {MoveType.Up, Vector3.forward},
-        {MoveType.Down, Vector3.back},
-        {MoveType.Left, Vector3.left},
-        {MoveType.Right, Vector3.right},
+        {DirectionType.Up, Vector3.forward},
+        {DirectionType.Down, Vector3.back},
+        {DirectionType.Left, Vector3.left},
+        {DirectionType.Right, Vector3.right},
     };
 
-    private Dictionary<MoveType, Quaternion> rotateDict = new Dictionary<MoveType, Quaternion>()
+    private Dictionary<DirectionType, Quaternion> rotateDict = new Dictionary<DirectionType, Quaternion>()
     {
-        {MoveType.Up,Quaternion.Euler(0, 0, 0)},
-        {MoveType.Down, Quaternion.Euler(0, 180, 0)},
-        {MoveType.Left, Quaternion.Euler(0, 270, 0)},
-        {MoveType.Right, Quaternion.Euler(0, 90, 0)},
+        {DirectionType.Up,Quaternion.Euler(0, 0, 0)},
+        {DirectionType.Down, Quaternion.Euler(0, 180, 0)},
+        {DirectionType.Left, Quaternion.Euler(0, 270, 0)},
+        {DirectionType.Right, Quaternion.Euler(0, 90, 0)},
     };
 
     void Awake()
     {
-        NotControlHero();
         RandomColor();
-    }
-
-
-    void Start()
-    {
-
     }
 
     public void Collected()
@@ -72,10 +64,10 @@ public class HeroView : MonoBehaviour
     void Update()
     {
         if (isControlHero)
-            Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), moveDirectionDict[currentMove] * 1, Color.yellow);
+            Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), transform.forward * 1, Color.yellow);
     }
 
-    public GameObject CheckMove(MoveType type)
+    public GameObject CheckMove(DirectionType type)
     {
         if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), moveDirectionDict[type], out RaycastHit hit, 1))
         {
@@ -86,39 +78,21 @@ public class HeroView : MonoBehaviour
             return null;
     }
 
-    public void Move(MoveType type)
+    public void Move(DirectionType type)
     {
-        currentMove = type;
         Vector3 dir = moveDirectionDict[type];
-        Quaternion rotateTo = rotateDict[type];
         Vector3 newPosition = transform.position + dir;
         transform.position = newPosition;
-        transform.rotation = rotateTo;
-
     }
 
-    public void SwapPosition(HeroView heroView)
+    public void Rotate(DirectionType type)
     {
-        currentMove = heroView.currentMove;
-        transform.position = heroView.transform.position;
-        Quaternion rotateTo = rotateDict[currentMove];
+        Quaternion rotateTo = rotateDict[type];
         transform.rotation = rotateTo;
     }
 
-    public void ChangePosition(Vector3 tempLastPosition, MoveType tempLastCurrentMove)
+    public void MoveToFollowTarget(HeroPresenter anotherHero)
     {
-        currentMove = tempLastCurrentMove;
-        transform.position = tempLastPosition;
-        Quaternion rotateTo = rotateDict[currentMove];
-        transform.rotation = rotateTo;
-    }
-
-    public void MoveFollow(HeroView heroView)
-    {
-        transform.position = heroView.transform.position - moveDirectionDict[heroView.currentMove];
-        currentMove = heroView.currentMove;
-        Quaternion rotateTo = rotateDict[currentMove];
-        transform.rotation = rotateTo;
-
+        transform.position = anotherHero.transform.position - moveDirectionDict[anotherHero.currentDirection];
     }
 }

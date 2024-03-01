@@ -8,7 +8,7 @@ public class PlayerInputView : MonoBehaviour
 {
     public PlayerInput playerInput;
 
-    public Action<MoveType> onMove;
+    public Action<DirectionType> onMove;
     public Action onNextHero;
     public Action onPreviousHero;
 
@@ -33,8 +33,8 @@ public class PlayerInputView : MonoBehaviour
 
     private void Move(InputAction.CallbackContext context)
     {
-        MoveType move = MapInputVectorToMoveType(context.ReadValue<Vector2>());
-        if (move == MoveType.NoInput) return;
+        DirectionType move = MapInputVectorToMoveType(context.ReadValue<Vector2>());
+        if (move == DirectionType.NoInput) return;
         Debug.Log("move : " + move);
         onMove?.Invoke(move);
     }
@@ -51,20 +51,20 @@ public class PlayerInputView : MonoBehaviour
         onPreviousHero?.Invoke();
     }
 
-    private MoveType MapInputVectorToMoveType(Vector2 inputVector)
+    private DirectionType MapInputVectorToMoveType(Vector2 inputVector)
     {
 
         if (inputVector.y == 1f)
-            return MoveType.Up;
+            return DirectionType.Up;
         else if (inputVector.y == -1f)
-            return MoveType.Down;
+            return DirectionType.Down;
         else if (inputVector.x == 1f)
-            return MoveType.Right;
+            return DirectionType.Right;
         else if (inputVector.x == -1f)
-            return MoveType.Left;
+            return DirectionType.Left;
         else
         {
-            return MoveType.NoInput;
+            return DirectionType.NoInput;
         }
     }
 

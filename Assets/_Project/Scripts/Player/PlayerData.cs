@@ -5,24 +5,24 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
-    public List<HeroView> collectedHero;
+    public List<HeroPresenter> collectedHero;
 
-    public void AddHero(HeroView heroView)
+    public void AddHero(HeroPresenter heroPresenter)
     {
-        collectedHero.Add(heroView);
+        collectedHero.Add(heroPresenter);
     }
 
-    public HeroView SwapNextHero()
+    public HeroPresenter SwapNextHero()
     {
-        HeroView current = collectedHero[0];
+        HeroPresenter current = collectedHero[0];
         collectedHero.RemoveAt(0);
         collectedHero.Add(current);
         return collectedHero[0];
     }
 
-    public HeroView SwapPreviousHero()
+    public HeroPresenter SwapPreviousHero()
     {
-        HeroView current = collectedHero[collectedHero.Count - 1];
+        HeroPresenter current = collectedHero[collectedHero.Count - 1];
         collectedHero.Remove(current);
         collectedHero.Insert(0, current);
         return collectedHero[0];
@@ -30,7 +30,7 @@ public class PlayerData : MonoBehaviour
 
 
 
-    public HeroView GetCurrentControlHero()
+    public HeroPresenter GetCurrentControlHero()
     {
         return collectedHero[0];
     }

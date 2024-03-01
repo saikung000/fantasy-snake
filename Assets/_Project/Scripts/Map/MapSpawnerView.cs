@@ -14,14 +14,14 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
     [SerializeField] private Transform obstacleParent;
     [SerializeField] private GameObject floor;
     [SerializeField] private GameObject wall;
-    [SerializeField] private HeroView heroPrefab;
+    [SerializeField] private HeroPresenter heroPrefab;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject obstacle1x1Prefab;
     [SerializeField] private GameObject obstacle1x2Prefab;
     [SerializeField] private GameObject obstacle2x1Prefab;
     [SerializeField] private GameObject obstacle2x2Prefab;
 
-    public List<HeroView> collectHeroList = new List<HeroView>();
+    public List<HeroPresenter> collectHeroList = new List<HeroPresenter>();
     public List<GameObject> enemyList = new List<GameObject>();
     public List<GameObject> obstacleList = new List<GameObject>();
 
@@ -44,8 +44,8 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
 
     private void createPlayer()
     {
-        HeroView heroView = Instantiate(heroPrefab, Vector3.zero, Quaternion.identity);
-        PlayerPresenter.Instance.AddHero(heroView);
+        HeroPresenter hero = Instantiate(heroPrefab, Vector3.zero, Quaternion.identity);
+        PlayerPresenter.Instance.AddHero(hero);
     }
 
     private void createObstacle()
@@ -74,8 +74,8 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
 
         for (int i = 0; i < setupMapSpawn.collectHero; i++)
         {
-            HeroView heroView = Instantiate(heroPrefab, randomPosition(), randomRotation(), collectHeroParent);
-            collectHeroList.Add(heroView);
+            HeroPresenter hero = Instantiate(heroPrefab, randomPosition(), randomRotation(), collectHeroParent);
+            collectHeroList.Add(hero);
         }
     }
 
@@ -147,9 +147,9 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
     }
 
 
-    public void RemoveCollectHero(HeroView heroView)
+    public void RemoveCollectHero(HeroPresenter herePresenter)
     {
-        collectHeroList.Remove(heroView);
+        collectHeroList.Remove(herePresenter);
     }
 
     public void RemoveEnemy()
