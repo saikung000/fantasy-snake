@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -22,6 +23,7 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
     [SerializeField] private GameObject obstacle2x2Prefab;
     [SerializeField] private SpawnStatScriptableObject spawnStat;
     [SerializeField] private SpawnRateScriptableObject spawnRate;
+    [SerializeField] private LayerMask layerMaskCheckObject;
     public int heroLevel = 1;
     public int enemyLevel = 1;
     private List<HeroPresenter> collectHeroList = new List<HeroPresenter>();
@@ -31,6 +33,7 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
     private int StartPositionX => -gridX / 2;
     private int StartPositionZ => -gridZ / 2;
 
+    private int[,] availableGird = new int[0, 0];
     void Start()
     {
         createGrid();
@@ -38,6 +41,7 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
 
     public void SetupGame()
     {
+        availableGird = new int[gridX, gridZ];
         heroLevel = 1;
         enemyLevel = 1;
         clearMap();
@@ -78,27 +82,36 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
 
     private void createObstacle()
     {
+        Vector3 spawnPosition = new Vector3();
         for (int i = 0; i < setupMapSpawn.obstacle2x2; i++)
         {
-            GameObject obstacle = Instantiate(obstacle2x2Prefab, randomPosition(), randomRotation(), obstacleParent);
+            spawnPosition = randomPosition(2, 2);
+            if (spawnPosition == Vector3.one * 99) break;
+            GameObject obstacle = Instantiate(obstacle2x2Prefab, spawnPosition, Quaternion.identity, obstacleParent);
             obstacleList.Add(obstacle);
         }
 
         for (int i = 0; i < setupMapSpawn.obstacle2x1; i++)
         {
-            GameObject obstacle = Instantiate(obstacle2x1Prefab, randomPosition(), randomRotation(), obstacleParent);
+            spawnPosition = randomPosition(2, 1);
+            if (spawnPosition == Vector3.one * 99) break;
+            GameObject obstacle = Instantiate(obstacle2x1Prefab, spawnPosition, Quaternion.identity, obstacleParent);
             obstacleList.Add(obstacle);
         }
 
-        for (int i = 0; i < setupMapSpawn.obstacle2x1; i++)
+        for (int i = 0; i < setupMapSpawn.obstacle1x2; i++)
         {
-            GameObject obstacle = Instantiate(obstacle1x2Prefab, randomPosition(), randomRotation(), obstacleParent);
+            spawnPosition = randomPosition(1, 2);
+            if (spawnPosition == Vector3.one * 99) break;
+            GameObject obstacle = Instantiate(obstacle1x2Prefab, spawnPosition, Quaternion.identity, obstacleParent);
             obstacleList.Add(obstacle);
         }
 
         for (int i = 0; i < setupMapSpawn.obstacle1x1; i++)
         {
-            GameObject obstacle = Instantiate(obstacle1x1Prefab, randomPosition(), randomRotation(), obstacleParent);
+            spawnPosition = randomPosition();
+            if (spawnPosition == Vector3.one * 99) break;
+            GameObject obstacle = Instantiate(obstacle1x1Prefab, spawnPosition, Quaternion.identity, obstacleParent);
             obstacleList.Add(obstacle);
         }
     }
@@ -107,7 +120,9 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
     {
         for (int i = 0; i < amount; i++)
         {
-            HeroPresenter hero = Instantiate(heroPrefab, randomPosition(), Quaternion.identity, collectHeroParent);
+            Vector3 spawnPosition = randomPosition();
+            if (spawnPosition == Vector3.one * 99) break;
+            HeroPresenter hero = Instantiate(heroPrefab, spawnPosition, Quaternion.identity, collectHeroParent);
             collectHeroList.Add(hero);
             hero.ChangeDirection((DirectionType)Random.Range(0, 4));
             var randomStat = spawnStat.RandomHeroStat(heroLevel);
@@ -125,7 +140,9 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
     {
         for (int i = 0; i < amount; i++)
         {
-            EnemyPresenter enemy = Instantiate(enemyPrefab, randomPosition(), Quaternion.identity, enemyParent);
+            Vector3 spawnPosition = randomPosition();
+            if (spawnPosition == Vector3.one * 99) break;
+            EnemyPresenter enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, enemyParent);
             enemyList.Add(enemy);
             enemy.ChangeDirection((DirectionType)Random.Range(0, 4));
             var randomStat = spawnStat.RandomEnemyStat(enemyLevel);
@@ -139,14 +156,31 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
         createEnemy(spawnRate.GetEnemySpawnAmount());
     }
 
-    public Vector3 randomPosition()
+
+    public Vector3 randomPosition(int sizeX = 1, int sizeZ = 1)
     {
-        int randomIndex = Random.Range(0, gridX * gridZ);
         Vector3 position = new Vector3();
-        position.x = randomIndex % gridZ + StartPositionX;
-        position.z = randomIndex / gridZ + StartPositionZ;
+        int x = 0;
+        while (x < 100)
+        {
+            int startPositioX = Random.Range(0, gridX - sizeX + 1);
+            int startPositioZ = Random.Range(0, gridZ - sizeZ + 1);
+            position.x = startPositioX + StartPositionX;
+            position.z = startPositioZ + StartPositionZ;
+            Collider[] hit = Physics.OverlapBox(position, new Vector3(sizeX / 2f, 0.5f, sizeZ / 2f), Quaternion.identity, layerMaskCheckObject.value);
+            if (hit.Count() == 0)
+            {
+                break;
+            }
+            x++;
+        }
+        if (x == 100)
+            return position = Vector3.one * 99;
+
         return position;
     }
+
+
 
     public Quaternion randomRotation()
     {

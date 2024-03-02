@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb4b07ef3c4ed844b20b4deb476d1ca, type: 3}
   m_Name: SetupMap
   m_EditorClassIdentifier: 
-  collectHero: 5
-  enemy: 2
-  obstacle1x1: 5
-  obstacle1x2: 1
-  obstacle2x1: 1
-  obstacle2x2: 1
+  collectHero: 3
+  enemy: 3
+  obstacle1x1: 10
+  obstacle1x2: 3
+  obstacle2x1: 3
+  obstacle2x2: 3

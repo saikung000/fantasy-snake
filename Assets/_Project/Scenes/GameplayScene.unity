@@ -1269,6 +1269,9 @@ MonoBehaviour:
   obstacle2x2Prefab: {fileID: 5067455874104958645, guid: f80effbd29a93334ab1b6a965fa7f7b0, type: 3}
   spawnStat: {fileID: 11400000, guid: 81125249d3725a74ea00b8b60d7e6e14, type: 2}
   spawnRate: {fileID: 11400000, guid: 74a127ba54ec42945afc6f7ba1b7dc64, type: 2}
+  layerMaskCheckObject:
+    serializedVersion: 2
+    m_Bits: 51
   heroLevel: 1
   enemyLevel: 1
 --- !u!224 &612159377
@@ -2045,7 +2048,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1268057149
 MonoBehaviour:
   m_ObjectHideFlags: 0
