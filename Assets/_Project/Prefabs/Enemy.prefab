@@ -216,7 +216,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5981468746742626301}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -5.6}
+  m_LocalPosition: {x: 0, y: 0, z: -8.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -257,6 +257,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<color="green">HP:100
 
+
     <color="red">ATK:100'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -266,8 +267,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 1979776869
-  m_fontColor: {r: 0.3959682, g: 1, b: 0, a: 0.4627451}
+    rgba: 4278255461
+  m_fontColor: {r: 0.3959682, g: 1, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -296,7 +297,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 1
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -404,6 +405,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 45.000004
       objectReference: {fileID: 0}
+    - target: {fileID: -6765159971065407959, guid: 4237571a788506840b6f88cbadf28323, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8b36ed024a759fa41a07fffd216773c8, type: 2}
+    - target: {fileID: -2929244932573928044, guid: 4237571a788506840b6f88cbadf28323, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8b36ed024a759fa41a07fffd216773c8, type: 2}
     - target: {fileID: 445712794880070669, guid: 4237571a788506840b6f88cbadf28323, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -0

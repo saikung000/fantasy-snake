@@ -49,21 +49,21 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
 
     private void clearMap()
     {
-        foreach (GameObject child in obstacleParent)
+        foreach (Transform  child in obstacleParent)
         {
-            Destroy(child);
+            Destroy(child.gameObject);
         }
         obstacleList.Clear();
 
-        foreach (GameObject child in collectHeroParent)
+        foreach (Transform  child in collectHeroParent)
         {
-            Destroy(child);
+            Destroy(child.gameObject);
         }
         collectHeroList.Clear();
 
-        foreach (GameObject child in enemyParent)
+        foreach (Transform  child in enemyParent)
         {
-            Destroy(child);
+            Destroy(child.gameObject);
         }
         enemyList.Clear();
     }

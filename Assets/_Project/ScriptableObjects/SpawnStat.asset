@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: SpawnStat
   m_EditorClassIdentifier: 
   minHeroHp: 100
-  maxHeroHp: 200
+  maxHeroHp: 1000
   minHeroAtk: 10
-  maxHeroAtk: 50
-  growingCoefficientHeroStats: 0.5
+  maxHeroAtk: 100
+  growingCoefficientHeroStats: 0.1
   minEnemyHp: 100
-  maxEnemyHp: 200
+  maxEnemyHp: 1000
   minEnemyAtk: 10
-  maxEnemyAtk: 50
-  growingCoefficientEnemyStats: 0.5
+  maxEnemyAtk: 100
+  growingCoefficientEnemyStats: 0.1

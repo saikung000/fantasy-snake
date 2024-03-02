@@ -7,25 +7,34 @@ public class GameManager : MonoInstance<GameManager>
 {
     public GameState gameState = GameState.Menu;
     public int score = 0;
-    public Action onGameOver;
-    public Action onMenu;
-    public Action onGameplay;
+    public Action<GameState> onGameStatsChange;
+    public Action<int> onScoreUpdate;
 
     void Start()
     {
-        StartGame();
+        gameState = GameState.Menu;
+        onGameStatsChange?.Invoke(gameState);
     }
+
     public void StartGame()
     {
-        PlayerPresenter.Instance.Reset();
+        gameState = GameState.Gameplay;
         score = 0;
+        PlayerPresenter.Instance.Reset();
         MapSpawnerView.Instance.SetupGame();
+        onGameStatsChange?.Invoke(gameState);
     }
 
     public void GameOver()
     {
         gameState = GameState.GameOver;
-        onGameOver?.Invoke();
+        onGameStatsChange?.Invoke(gameState);
+    }
+
+    public void AddScore(int score)
+    {
+        score += score;
+        onScoreUpdate?.Invoke(score);
     }
 }
 

@@ -10,13 +10,13 @@ public class HpAtkTextView : MonoBehaviour
     public void UpdateHpText(int hp)
     {
         this.hp = hp;
-        HpAtkText.text = $"<color=green>HP:{hp}<br><color=red>ATK:{atk}";
+        HpAtkText.text = $"<color=green>HP:{hp}<br><br><color=red>ATK:{atk}";
     }
 
     public void UpdateAtkText(int atk)
     {
         this.atk = atk;
-        HpAtkText.text = $"<color=green>HP:{hp}<br><color=red>ATK:{atk}";
+        HpAtkText.text = $"<color=green>HP:{hp}<br><br><color=red>ATK:{atk}";
     }
 
     public void SetActive(bool active)

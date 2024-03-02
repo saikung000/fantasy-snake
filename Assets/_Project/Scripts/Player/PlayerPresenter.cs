@@ -10,6 +10,8 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
     [SerializeField] private PlayerInputView playerInputView;
     [SerializeField] private PlayerData playerData;
 
+    public Action<HeroPresenter> onChangeControlHero;
+
 
     void Start()
     {
@@ -18,6 +20,10 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         playerInputView.onPreviousHero = () => PreviousHero();
     }
 
+    public HeroPresenter GetControlHero()
+    {
+        return currentControlHero;
+    }
 
 
     private void MoveHero(DirectionType type)
@@ -74,7 +80,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
             else
             {
                 NextHero();
-                Destroy(playerData.RemoveFirstHero().gameObject);
+                Destroy(playerData.RemoveLastHero().gameObject);
             }
         }
     }
@@ -136,6 +142,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
 
 
         currentControlHero = playerData.SwapPreviousHero();
+        onChangeControlHero?.Invoke(currentControlHero);
         currentControlHero.ControlHero();
 
     }
@@ -160,12 +167,14 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
 
 
         currentControlHero = playerData.SwapNextHero();
+        onChangeControlHero?.Invoke(currentControlHero);
         currentControlHero.ControlHero();
     }
 
     public void AddFirstHero(HeroPresenter heroView)
     {
         currentControlHero = heroView;
+        onChangeControlHero?.Invoke(currentControlHero);
         heroView.transform.SetParent(transform);
         playerData.collectedHero.Add(heroView);
         currentControlHero.Collected();
@@ -174,10 +183,11 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
 
     public void Reset()
     {
-        playerData.collectedHero.Clear();
-        foreach (GameObject child in transform)
+        foreach (HeroPresenter child in playerData.collectedHero)
         {
-            Destroy(child);
+            Destroy(child.gameObject);
         }
+        playerData.collectedHero.Clear();
+
     }
 }
