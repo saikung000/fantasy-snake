@@ -29,7 +29,6 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
     private List<GameObject> obstacleList = new List<GameObject>();
 
     private int StartPositionX => -gridX / 2;
-
     private int StartPositionZ => -gridZ / 2;
 
     void Start()
@@ -122,7 +121,6 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
         createEnemy(spawnRate.GetEnemySpawnAmount());
     }
 
-
     public Vector3 randomPosition()
     {
         int randomIndex = Random.Range(0, gridX * gridZ);
@@ -131,8 +129,6 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
         position.z = randomIndex / gridZ + StartPositionZ;
         return position;
     }
-
-
 
     public Quaternion randomRotation()
     {
@@ -145,7 +141,6 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
 
     private void createGrid()
     {
-
         for (int x = 0; x < gridX; x++)
         {
             for (int z = 0; z < gridZ; z++)
@@ -154,7 +149,6 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
                 Instantiate(floor, position, Quaternion.identity, mapParent);
             }
         }
-
 
         for (int x = 0; x <= gridX; x++)
         {
@@ -172,7 +166,6 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
             Instantiate(wall, positionWallRight, Quaternion.identity, mapParent);
         }
     }
-
 
     public void RemoveCollectHero(HeroPresenter herePresenter)
     {

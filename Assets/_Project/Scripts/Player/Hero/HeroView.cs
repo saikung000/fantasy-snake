@@ -63,8 +63,8 @@ public class HeroView : MonoBehaviour
 
     void Update()
     {
-        if (isControlHero)
-            Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), transform.forward * 1, Color.yellow);
+        //if (isControlHero)
+        Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), transform.forward * 1, Color.yellow);
     }
 
     public GameObject CheckMove(DirectionType type)
