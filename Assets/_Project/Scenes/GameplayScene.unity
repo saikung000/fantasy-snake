@@ -396,6 +396,10 @@ MonoBehaviour:
   obstacle1x2Prefab: {fileID: 8825549497444984747, guid: 7914a92636eb82541b968e0db475479b, type: 3}
   obstacle2x1Prefab: {fileID: 8825549497444984747, guid: 7914a92636eb82541b968e0db475479b, type: 3}
   obstacle2x2Prefab: {fileID: 8825549497444984747, guid: 7914a92636eb82541b968e0db475479b, type: 3}
+  spawnStat: {fileID: 11400000, guid: 81125249d3725a74ea00b8b60d7e6e14, type: 2}
+  spawnRate: {fileID: 11400000, guid: 74a127ba54ec42945afc6f7ba1b7dc64, type: 2}
+  heroLevel: 1
+  enemyLevel: 1
   collectHeroList: []
   enemyList: []
   obstacleList: []

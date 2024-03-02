@@ -43,6 +43,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         {
             HeroPresenter heroPresenter = hit.GetComponent<HeroPresenter>();
             CollectHero(type, heroPresenter);
+            MapSpawnerView.Instance.SpawnNewCollectHero();
 
         }
         else if (hit.CompareTag("Enemy"))
@@ -75,7 +76,6 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
                 HeroPresenter lastHero =  playerData.collectedHero.Last();
                 playerData.collectedHero.Remove(lastHero);
                 Destroy(lastHero.gameObject);
-               
             }
         }
     }
@@ -164,7 +164,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         currentControlHero.ControlHero();
     }
 
-    public void AddHero(HeroPresenter heroView)
+    public void AddFirstHero(HeroPresenter heroView)
     {
         currentControlHero = heroView;
         heroView.transform.SetParent(transform);

@@ -18,17 +18,15 @@ public class EnemyPresenter : MonoBehaviour
         {DirectionType.Right, Quaternion.Euler(0, 90, 0)},
     };
 
-    void Awake()
-    {
-        Init();
-        hpAtkTextView.SetActive(true);
-    }
+ 
 
-    private void Init()
+    public void Init(int hp, int atk)
     {
+        SetStat(hp, atk);
         hpAtkTextView.UpdateHpText(characterData.hp);
         hpAtkTextView.UpdateAtkText(characterData.attack);
         characterData.OnHpChange += (hp) => hpAtkTextView.UpdateHpText(hp);
+         hpAtkTextView.SetActive(true);
     }
 
     public void ChangeDirection(DirectionType type)
@@ -45,6 +43,7 @@ public class EnemyPresenter : MonoBehaviour
         {
             MapSpawnerView.Instance.RemoveEnemy(this);
             Destroy(this.gameObject);
+            MapSpawnerView.Instance.SpawnNewEnemy();
         }
     }
 
@@ -74,6 +73,12 @@ public class EnemyPresenter : MonoBehaviour
         Quaternion rotateTo = rotateDict[resultType];
         transform.rotation = rotateTo;
         currentDirection = resultType;
+    }
+
+    public void SetStat(int hp, int atk)
+    {
+        characterData.hp = hp;
+        characterData.attack = atk;
     }
 }
 

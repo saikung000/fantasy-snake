@@ -10,17 +10,13 @@ public class HeroPresenter : MonoBehaviour
     public CharacterData characterData;
     public DirectionType currentDirection = DirectionType.Up;
 
-    void Awake()
+    public void Init(int hp, int atk)
     {
-        NotControlHero();
-        Init();
-    }
-
-    private void Init()
-    {
+        SetStat(hp, atk);
         hpAtkTextView.UpdateHpText(characterData.hp);
         hpAtkTextView.UpdateAtkText(characterData.attack);
         characterData.OnHpChange += (hp) => hpAtkTextView.UpdateHpText(hp);
+        NotControlHero();
     }
 
     public void Collected()
@@ -87,5 +83,11 @@ public class HeroPresenter : MonoBehaviour
     public int GetHp()
     {
         return characterData.hp;
+    }
+
+    public void SetStat(int hp, int atk)
+    {
+        characterData.hp = hp;
+        characterData.attack = atk;
     }
 }

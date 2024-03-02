@@ -20,10 +20,13 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
     [SerializeField] private GameObject obstacle1x2Prefab;
     [SerializeField] private GameObject obstacle2x1Prefab;
     [SerializeField] private GameObject obstacle2x2Prefab;
-
-    public List<HeroPresenter> collectHeroList = new List<HeroPresenter>();
-    public List<EnemyPresenter> enemyList = new List<EnemyPresenter>();
-    public List<GameObject> obstacleList = new List<GameObject>();
+    [SerializeField] private SpawnStatScriptableObject spawnStat;
+    [SerializeField] private SpawnRateScriptableObject spawnRate;
+    public int heroLevel = 1;
+    public int enemyLevel = 1;
+    private List<HeroPresenter> collectHeroList = new List<HeroPresenter>();
+    private List<EnemyPresenter> enemyList = new List<EnemyPresenter>();
+    private List<GameObject> obstacleList = new List<GameObject>();
 
     private int StartPositionX => -gridX / 2;
 
@@ -36,19 +39,16 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
 
     public void SetupGame()
     {
+        heroLevel = 1;
+        enemyLevel = 1;
+        clearMap();
         createPlayer();
         createObstacle();
-        createCollectHero();
-        createEnemy();
+        createCollectHero(setupMapSpawn.collectHero);
+        createEnemy(setupMapSpawn.enemy);
     }
 
-    private void createPlayer()
-    {
-        HeroPresenter hero = Instantiate(heroPrefab, Vector3.zero, Quaternion.identity);
-        PlayerPresenter.Instance.AddHero(hero);
-    }
-
-    private void createObstacle()
+    private void clearMap()
     {
         foreach (GameObject child in obstacleParent)
         {
@@ -56,6 +56,29 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
         }
         obstacleList.Clear();
 
+        foreach (GameObject child in collectHeroParent)
+        {
+            Destroy(child);
+        }
+        collectHeroList.Clear();
+
+        foreach (GameObject child in enemyParent)
+        {
+            Destroy(child);
+        }
+        enemyList.Clear();
+    }
+
+    private void createPlayer()
+    {
+        HeroPresenter hero = Instantiate(heroPrefab, Vector3.zero, Quaternion.identity);
+        var randomStat = spawnStat.RandomHeroStat(1);
+        hero.Init(randomStat.hp, randomStat.atk);
+        PlayerPresenter.Instance.AddFirstHero(hero);
+    }
+
+    private void createObstacle()
+    {
         for (int i = 0; i < setupMapSpawn.obstacle1x1; i++)
         {
             GameObject obstacle = Instantiate(obstacle1x1Prefab, randomPosition(), randomRotation(), obstacleParent);
@@ -63,38 +86,40 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
         }
     }
 
-    private void createCollectHero()
+    private void createCollectHero(int amount)
     {
-
-        foreach (GameObject child in collectHeroParent)
-        {
-            Destroy(child);
-        }
-        collectHeroList.Clear();
-
-        for (int i = 0; i < setupMapSpawn.collectHero; i++)
+        for (int i = 0; i < amount; i++)
         {
             HeroPresenter hero = Instantiate(heroPrefab, randomPosition(), Quaternion.identity, collectHeroParent);
             collectHeroList.Add(hero);
             hero.ChangeDirection((DirectionType)Random.Range(0, 4));
+            var randomStat = spawnStat.RandomHeroStat(heroLevel);
+            hero.Init(randomStat.hp, randomStat.atk);
         }
+        heroLevel++;
     }
 
-    private void createEnemy()
+    public void SpawnNewCollectHero()
     {
-        foreach (GameObject child in enemyParent)
-        {
-            Destroy(child);
-        }
-        enemyList.Clear();
+        createCollectHero(spawnRate.GetHeroSpawnAmount());
+    }
 
-
-        for (int i = 0; i < setupMapSpawn.enemy; i++)
+    private void createEnemy(int amount)
+    {
+        for (int i = 0; i < amount; i++)
         {
             EnemyPresenter enemy = Instantiate(enemyPrefab, randomPosition(), Quaternion.identity, enemyParent);
             enemyList.Add(enemy);
             enemy.ChangeDirection((DirectionType)Random.Range(0, 4));
+            var randomStat = spawnStat.RandomEnemyStat(enemyLevel);
+            enemy.Init(randomStat.hp, randomStat.atk);
         }
+        enemyLevel++;
+    }
+
+    public void SpawnNewEnemy()
+    {
+        createEnemy(spawnRate.GetEnemySpawnAmount());
     }
 
 
