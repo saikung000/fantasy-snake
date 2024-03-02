@@ -53,6 +53,7 @@
     },
     "dotnet.defaultSolution": "fantasy-snake.sln",
     "cSpell.words": [
-        "gameplay"
+        "gameplay",
+        "Mathf"
     ]
 }
