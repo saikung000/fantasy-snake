@@ -74,8 +74,10 @@ public class HeroView : MonoBehaviour
             Debug.Log("Did Hit : " + hit.collider.gameObject.name + ":" + hit.collider.tag);
             return hit.collider.gameObject;
         }
-        else
+        else{
+            //Debug.Log("Didn't Hit");
             return null;
+        }
     }
 
     public void Move(DirectionType type)

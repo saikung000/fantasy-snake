@@ -91,4 +91,6 @@ public class HeroPresenter : MonoBehaviour
         characterData.hp = hp;
         characterData.attack = atk;
     }
+
+
 }

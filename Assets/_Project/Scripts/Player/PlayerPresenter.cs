@@ -74,10 +74,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
             else
             {
                 NextHero();
-                HeroPresenter lastHero = playerData.collectedHero.Last();
-                playerData.collectedHero.Remove(lastHero);
-                Destroy(lastHero.gameObject);
-                currentControlHero.ChangeDirection(type);
+                Destroy(playerData.RemoveFirstHero().gameObject);
             }
         }
     }
@@ -96,7 +93,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
     {
         for (int i = playerData.collectedHero.Count - 1; i > 0; i--)
         {
-            playerData.collectedHero[i].Move(playerData.collectedHero[i - 1].currentDirection);
+            playerData.collectedHero[i].SwapPosition(playerData.collectedHero[i - 1]);
         }
         currentControlHero.Move(type);
     }
@@ -132,7 +129,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         for (int i = 0; i < heroViewList.Count - 1; i++)
         {
             int swapIndex = i + 1;
-            Debug.Log(i + ":" + swapIndex);
+            //Debug.Log(i + ":" + swapIndex);
             heroViewList[i].SwapPosition(heroViewList[swapIndex]);
         }
         heroViewList.Last().ChangePosition(tempLastPosition, tempLastCurrentMove);
@@ -155,7 +152,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         for (int i = heroViewList.Count - 1; i > 0; i--)
         {
             int swapIndex = i - 1;
-            Debug.Log(i + ":" + swapIndex);
+            //Debug.Log(i + ":" + swapIndex);
             heroViewList[i].SwapPosition(heroViewList[swapIndex]);
         }
         heroViewList[0].ChangePosition(tempLastPosition, tempLastCurrentMove);
