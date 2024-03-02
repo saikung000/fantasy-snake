@@ -49,19 +49,19 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
 
     private void clearMap()
     {
-        foreach (Transform  child in obstacleParent)
+        foreach (Transform child in obstacleParent)
         {
             Destroy(child.gameObject);
         }
         obstacleList.Clear();
 
-        foreach (Transform  child in collectHeroParent)
+        foreach (Transform child in collectHeroParent)
         {
             Destroy(child.gameObject);
         }
         collectHeroList.Clear();
 
-        foreach (Transform  child in enemyParent)
+        foreach (Transform child in enemyParent)
         {
             Destroy(child.gameObject);
         }
@@ -78,6 +78,24 @@ public class MapSpawnerView : MonoSingleton<MapSpawnerView>
 
     private void createObstacle()
     {
+        for (int i = 0; i < setupMapSpawn.obstacle2x2; i++)
+        {
+            GameObject obstacle = Instantiate(obstacle2x2Prefab, randomPosition(), randomRotation(), obstacleParent);
+            obstacleList.Add(obstacle);
+        }
+
+        for (int i = 0; i < setupMapSpawn.obstacle2x1; i++)
+        {
+            GameObject obstacle = Instantiate(obstacle2x1Prefab, randomPosition(), randomRotation(), obstacleParent);
+            obstacleList.Add(obstacle);
+        }
+
+        for (int i = 0; i < setupMapSpawn.obstacle2x1; i++)
+        {
+            GameObject obstacle = Instantiate(obstacle1x2Prefab, randomPosition(), randomRotation(), obstacleParent);
+            obstacleList.Add(obstacle);
+        }
+
         for (int i = 0; i < setupMapSpawn.obstacle1x1; i++)
         {
             GameObject obstacle = Instantiate(obstacle1x1Prefab, randomPosition(), randomRotation(), obstacleParent);

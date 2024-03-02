@@ -1264,9 +1264,9 @@ MonoBehaviour:
   heroPrefab: {fileID: 2483041482997249207, guid: 55cb7962cb814ee469578f735ebb763b, type: 3}
   enemyPrefab: {fileID: 7511773374454358134, guid: 0b6889078d3847f489fba50964a17586, type: 3}
   obstacle1x1Prefab: {fileID: 8825549497444984747, guid: 7914a92636eb82541b968e0db475479b, type: 3}
-  obstacle1x2Prefab: {fileID: 8825549497444984747, guid: 7914a92636eb82541b968e0db475479b, type: 3}
-  obstacle2x1Prefab: {fileID: 8825549497444984747, guid: 7914a92636eb82541b968e0db475479b, type: 3}
-  obstacle2x2Prefab: {fileID: 8825549497444984747, guid: 7914a92636eb82541b968e0db475479b, type: 3}
+  obstacle1x2Prefab: {fileID: 7205540468954932173, guid: 3ecb2b7a4e98b6d4baa4af0bfe6b519f, type: 3}
+  obstacle2x1Prefab: {fileID: 8004290144590720666, guid: 39675445e9730d543b7e799a0cc0b671, type: 3}
+  obstacle2x2Prefab: {fileID: 5067455874104958645, guid: f80effbd29a93334ab1b6a965fa7f7b0, type: 3}
   spawnStat: {fileID: 11400000, guid: 81125249d3725a74ea00b8b60d7e6e14, type: 2}
   spawnRate: {fileID: 11400000, guid: 74a127ba54ec42945afc6f7ba1b7dc64, type: 2}
   heroLevel: 1
@@ -2045,7 +2045,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1268057149
 MonoBehaviour:
   m_ObjectHideFlags: 0
