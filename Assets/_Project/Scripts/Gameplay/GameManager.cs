@@ -33,8 +33,8 @@ public class GameManager : MonoInstance<GameManager>
 
     public void AddScore(int score)
     {
-        score += score;
-        onScoreUpdate?.Invoke(score);
+        this.score += score;
+        onScoreUpdate?.Invoke( this.score);
     }
 }
 
