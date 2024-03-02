@@ -37,33 +37,57 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         }
         else if (hit.CompareTag("Obstacle") || hit.CompareTag("Hero"))
         {
-            GameManager.Instance.CheckToGameOver();
+            GameManager.Instance.GameOver();
         }
         else if (hit.CompareTag("CollectHero"))
         {
             HeroPresenter heroPresenter = hit.GetComponent<HeroPresenter>();
-            heroPresenter.Collected();
-            Move(type);
-            heroPresenter.MoveToFollowTarget(playerData.collectedHero.Last());
-            playerData.AddHero(heroPresenter);
-            heroPresenter.transform.SetParent(transform);
-            MapSpawnerView.Instance.RemoveCollectHero(heroPresenter);
+            CollectHero(type, heroPresenter);
 
         }
         else if (hit.CompareTag("Enemy"))
         {
             EnemyPresenter enemyPresenter = hit.GetComponent<EnemyPresenter>();
-            int heroAtk = currentControlHero.GetAttack();
-            int enemyAtk = enemyPresenter.GetAttack();
-            currentControlHero.TakeDamage(enemyAtk);
-            enemyPresenter.TakeDamage(heroAtk);
-            enemyPresenter.RotateTo(type);
-            currentControlHero.ChangeDirection(type);
+            Attack(type, enemyPresenter);
         }
         else
         {
             Move(type);
         }
+    }
+
+    private void Attack(DirectionType type, EnemyPresenter enemyPresenter)
+    {
+        int heroAtk = currentControlHero.GetAttack();
+        int enemyAtk = enemyPresenter.GetAttack();
+        currentControlHero.TakeDamage(enemyAtk);
+        enemyPresenter.TakeDamage(heroAtk);
+        enemyPresenter.RotateTo(type);
+        currentControlHero.ChangeDirection(type);
+        if(currentControlHero.GetHp() <= 0)
+        {
+            if(playerData.collectedHero.Count() == 1)
+            {
+                GameManager.Instance.GameOver();
+            }else 
+            {
+                NextHero();
+                HeroPresenter lastHero =  playerData.collectedHero.Last();
+                playerData.collectedHero.Remove(lastHero);
+                Destroy(lastHero.gameObject);
+               
+            }
+        }
+    }
+
+    private void CollectHero(DirectionType type, HeroPresenter heroPresenter)
+    {
+        heroPresenter.Collected();
+        Move(type);
+        heroPresenter.MoveToFollowTarget(playerData.collectedHero.Last());
+        playerData.AddHero(heroPresenter);
+        heroPresenter.transform.SetParent(transform);
+        MapSpawnerView.Instance.RemoveCollectHero(heroPresenter);
     }
 
     private void Move(DirectionType type)

@@ -83,4 +83,9 @@ public class HeroPresenter : MonoBehaviour
     {
         return characterData.attack;
     }
+
+    public int GetHp()
+    {
+        return characterData.hp;
+    }
 }

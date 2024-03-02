@@ -22,7 +22,7 @@ public class GameManager : MonoInstance<GameManager>
         MapSpawnerView.Instance.SetupGame();
     }
 
-    public void CheckToGameOver()
+    public void GameOver()
     {
         gameState = GameState.GameOver;
         onGameOver?.Invoke();
