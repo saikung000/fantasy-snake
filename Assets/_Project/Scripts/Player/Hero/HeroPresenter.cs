@@ -28,6 +28,7 @@ public class HeroPresenter : MonoBehaviour
     {
         heroView.ControlHero();
         hpAtkTextView.SetActive(true);
+        CameraManager.Instance.SetCameraFollow(gameObject);
     }
     public void NotControlHero()
     {

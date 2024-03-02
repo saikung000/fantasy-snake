@@ -65,17 +65,19 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         enemyPresenter.TakeDamage(heroAtk);
         enemyPresenter.RotateTo(type);
         currentControlHero.ChangeDirection(type);
-        if(currentControlHero.GetHp() <= 0)
+        if (currentControlHero.GetHp() <= 0)
         {
-            if(playerData.collectedHero.Count() == 1)
+            if (playerData.collectedHero.Count() == 1)
             {
                 GameManager.Instance.GameOver();
-            }else 
+            }
+            else
             {
                 NextHero();
-                HeroPresenter lastHero =  playerData.collectedHero.Last();
+                HeroPresenter lastHero = playerData.collectedHero.Last();
                 playerData.collectedHero.Remove(lastHero);
                 Destroy(lastHero.gameObject);
+                currentControlHero.ChangeDirection(type);
             }
         }
     }
