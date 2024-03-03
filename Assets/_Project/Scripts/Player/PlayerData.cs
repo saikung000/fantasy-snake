@@ -6,46 +6,46 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
-    public List<HeroPresenter> collectedHero;
+    public List<HeroPresenter> collectedHeroList;
 
     public void AddHero(HeroPresenter heroPresenter)
     {
-        collectedHero.Add(heroPresenter);
+        collectedHeroList.Add(heroPresenter);
     }
 
     public HeroPresenter RemoveFirstHero()
     {
-        collectedHero.RemoveAt(0);
-        return collectedHero[0];
+        collectedHeroList.RemoveAt(0);
+        return collectedHeroList[0];
     }
 
     public HeroPresenter RemoveLastHero()
     {
-        HeroPresenter last = collectedHero.Last();
-        collectedHero.Remove(last);
+        HeroPresenter last = collectedHeroList.Last();
+        collectedHeroList.Remove(last);
         return last;
     }
 
     public HeroPresenter SwapNextHero()
     {
-        HeroPresenter current = collectedHero[0];
-        collectedHero.RemoveAt(0);
-        collectedHero.Add(current);
-        return collectedHero[0];
+        HeroPresenter current = collectedHeroList[0];
+        collectedHeroList.RemoveAt(0);
+        collectedHeroList.Add(current);
+        return collectedHeroList[0];
     }
 
     public HeroPresenter SwapPreviousHero()
     {
-        HeroPresenter current = collectedHero[collectedHero.Count - 1];
-        collectedHero.Remove(current);
-        collectedHero.Insert(0, current);
-        return collectedHero[0];
+        HeroPresenter current = collectedHeroList[collectedHeroList.Count - 1];
+        collectedHeroList.Remove(current);
+        collectedHeroList.Insert(0, current);
+        return collectedHeroList[0];
     }
 
 
 
     public HeroPresenter GetCurrentControlHero()
     {
-        return collectedHero[0];
+        return collectedHeroList[0];
     }
 }

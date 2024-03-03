@@ -48,7 +48,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         }
         else if (hit.CompareTag("Obstacle"))
         {
-            if (playerData.collectedHero.Count() == 1)
+            if (playerData.collectedHeroList.Count() == 1)
             {
                 GameManager.Instance.GameOver();
             }
@@ -88,7 +88,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         currentControlHero.ChangeDirection(type);
         if (currentControlHero.GetHp() <= 0)
         {
-            if (playerData.collectedHero.Count() == 1)
+            if (playerData.collectedHeroList.Count() == 1)
             {
                 GameManager.Instance.GameOver();
             }
@@ -104,7 +104,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
     {
         heroPresenter.Collected();
         Move(type);
-        heroPresenter.MoveToFollowTarget(playerData.collectedHero.Last());
+        heroPresenter.MoveToFollowTarget(playerData.collectedHeroList.Last());
         playerData.AddHero(heroPresenter);
         heroPresenter.transform.SetParent(transform);
         MapSpawnerManager.Instance.RemoveCollectHero(heroPresenter);
@@ -112,9 +112,9 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
 
     private void Move(DirectionType type)
     {
-        for (int i = playerData.collectedHero.Count - 1; i > 0; i--)
+        for (int i = playerData.collectedHeroList.Count - 1; i > 0; i--)
         {
-            playerData.collectedHero[i].SwapPosition(playerData.collectedHero[i - 1]);
+            playerData.collectedHeroList[i].SwapPosition(playerData.collectedHeroList[i - 1]);
         }
         currentControlHero.Move(type);
     }
@@ -140,7 +140,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
 
     private void PreviousHero()
     {
-        List<HeroPresenter> heroViewList = playerData.collectedHero;
+        List<HeroPresenter> heroViewList = playerData.collectedHeroList;
         if (heroViewList.Count <= 1) return;
 
         currentControlHero.NotControlHero();
@@ -164,7 +164,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
 
     private void NextHero()
     {
-        List<HeroPresenter> heroViewList = playerData.collectedHero;
+        List<HeroPresenter> heroViewList = playerData.collectedHeroList;
         if (heroViewList.Count <= 1) return;
 
         currentControlHero.NotControlHero();
@@ -191,18 +191,18 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         currentControlHero = heroView;
         onChangeControlHero?.Invoke(currentControlHero);
         heroView.transform.SetParent(transform);
-        playerData.collectedHero.Add(heroView);
+        playerData.collectedHeroList.Add(heroView);
         currentControlHero.Collected();
         currentControlHero.ControlHero();
     }
 
     public void Reset()
     {
-        foreach (HeroPresenter child in playerData.collectedHero)
+        foreach (HeroPresenter child in playerData.collectedHeroList)
         {
             Destroy(child.gameObject);
         }
-        playerData.collectedHero.Clear();
+        playerData.collectedHeroList.Clear();
 
     }
 }
