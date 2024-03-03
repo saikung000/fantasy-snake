@@ -28,7 +28,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
 
     private void MoveHero(DirectionType type)
     {
-        if (CheckCanMove(type, currentControlHero.currentDirection) && GameManager.Instance.gameState == GameState.Gameplay)
+        if (GameManager.Instance.gameState == GameState.Gameplay && CheckCanMove(type, currentControlHero.currentDirection))
         {
             CheckMoveTo(type);
         }

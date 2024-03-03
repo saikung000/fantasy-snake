@@ -6,6 +6,8 @@ public class HeroView : MonoBehaviour
 {
     public GameObject faceDirObject;
     public bool isControlHero = false;
+    public GameObject collectEffect;
+    public Animator animator;
     private Dictionary<DirectionType, Vector3> moveDirectionDict = new Dictionary<DirectionType, Vector3>()
     {
         {DirectionType.Up, Vector3.forward},
@@ -29,7 +31,9 @@ public class HeroView : MonoBehaviour
 
     public void Collected()
     {
+        collectEffect.SetActive(false);
         this.tag = "Hero";
+        animator.SetBool("Walk", true);
         foreach (var meshRenderer in GetComponentsInChildren<MeshRenderer>())
         {
             Color modelColor = meshRenderer.material.color;
@@ -74,7 +78,8 @@ public class HeroView : MonoBehaviour
             Debug.Log("Did Hit : " + hit.collider.gameObject.name + ":" + hit.collider.tag);
             return hit.collider.gameObject;
         }
-        else{
+        else
+        {
             //Debug.Log("Didn't Hit");
             return null;
         }
