@@ -24,8 +24,6 @@ public class MapSpawnerManager : MonoSingleton<MapSpawnerManager>
     [SerializeField] private SpawnStatScriptableObject spawnStat;
     [SerializeField] private SpawnRateScriptableObject spawnRate;
     [SerializeField] private LayerMask layerMaskCheckObject;
-    public int heroLevel = 1;
-    public int enemyLevel = 1;
     private List<HeroPresenter> collectHeroList = new List<HeroPresenter>();
     private List<EnemyPresenter> enemyList = new List<EnemyPresenter>();
     private List<GameObject> obstacleList = new List<GameObject>();
@@ -42,8 +40,6 @@ public class MapSpawnerManager : MonoSingleton<MapSpawnerManager>
     public void SetupGame()
     {
         availableGird = new int[gridX, gridZ];
-        heroLevel = 1;
-        enemyLevel = 1;
         clearMap();
         createPlayer();
         createObstacle();
@@ -75,8 +71,7 @@ public class MapSpawnerManager : MonoSingleton<MapSpawnerManager>
     private void createPlayer()
     {
         HeroPresenter hero = Instantiate(heroPrefab, Vector3.zero, Quaternion.identity);
-        var randomStat = spawnStat.RandomHeroStat(1);
-        hero.Init(randomStat.hp, randomStat.atk);
+        hero.Init(spawnStat.CreateHeroStat());
         PlayerPresenter.Instance.AddFirstHero(hero);
     }
 
@@ -125,10 +120,8 @@ public class MapSpawnerManager : MonoSingleton<MapSpawnerManager>
             HeroPresenter hero = Instantiate(heroPrefab, spawnPosition, Quaternion.identity, collectHeroParent);
             collectHeroList.Add(hero);
             hero.ChangeDirection((DirectionType)Random.Range(0, 4));
-            var randomStat = spawnStat.RandomHeroStat(heroLevel);
-            hero.Init(randomStat.hp, randomStat.atk);
+            hero.Init(spawnStat.CreateHeroStat());
         }
-        heroLevel++;
     }
 
     public void SpawnNewCollectHero()
@@ -145,10 +138,8 @@ public class MapSpawnerManager : MonoSingleton<MapSpawnerManager>
             EnemyPresenter enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, enemyParent);
             enemyList.Add(enemy);
             enemy.ChangeDirection((DirectionType)Random.Range(0, 4));
-            var randomStat = spawnStat.RandomEnemyStat(enemyLevel);
-            enemy.Init(randomStat.hp, randomStat.atk);
+            enemy.Init(spawnStat.CreateEnemyStat());
         }
-        enemyLevel++;
     }
 
     public void SpawnNewEnemy()

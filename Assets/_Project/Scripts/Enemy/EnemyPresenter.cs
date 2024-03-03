@@ -7,7 +7,7 @@ public class EnemyPresenter : MonoBehaviour
 {
 
     public HpAtkTextView hpAtkTextView;
-    public CharacterData characterData;
+    public CharacterData characterData = new CharacterData();
     public DirectionType currentDirection = DirectionType.Up;
 
     private Dictionary<DirectionType, Quaternion> rotateDict = new Dictionary<DirectionType, Quaternion>()
@@ -18,15 +18,17 @@ public class EnemyPresenter : MonoBehaviour
         {DirectionType.Right, Quaternion.Euler(0, 90, 0)},
     };
 
- 
 
-    public void Init(int hp, int atk)
+
+    public void Init(CharacterData characterData)
     {
-        SetStat(hp, atk);
+        this.characterData = characterData;
         hpAtkTextView.UpdateHpText(characterData.hp);
         hpAtkTextView.UpdateAtkText(characterData.attack);
         characterData.OnHpChange += (hp) => hpAtkTextView.UpdateHpText(hp);
-         hpAtkTextView.SetActive(true);
+        characterData.OnAtkChange += (atk) => hpAtkTextView.UpdateAtkText(atk);
+        PlayerPresenter.Instance.onPlayerMove += () => characterData.GrowingStat();
+        hpAtkTextView.SetActive(true);
     }
 
     public void ChangeDirection(DirectionType type)
@@ -76,10 +78,5 @@ public class EnemyPresenter : MonoBehaviour
         currentDirection = resultType;
     }
 
-    public void SetStat(int hp, int atk)
-    {
-        characterData.hp = hp;
-        characterData.attack = atk;
-    }
 }
 

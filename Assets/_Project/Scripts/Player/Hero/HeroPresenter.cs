@@ -7,15 +7,17 @@ public class HeroPresenter : MonoBehaviour
 {
     public HeroView heroView;
     public HpAtkTextView hpAtkTextView;
-    public CharacterData characterData;
+    public CharacterData characterData = new CharacterData();
     public DirectionType currentDirection = DirectionType.Up;
 
-    public void Init(int hp, int atk)
+    public void Init(CharacterData characterData)
     {
-        SetStat(hp, atk);
+        this.characterData = characterData;
         hpAtkTextView.UpdateHpText(characterData.hp);
         hpAtkTextView.UpdateAtkText(characterData.attack);
         characterData.OnHpChange += (hp) => hpAtkTextView.UpdateHpText(hp);
+        characterData.OnAtkChange += (atk) => hpAtkTextView.UpdateAtkText(atk);
+        PlayerPresenter.Instance.onPlayerMove += () => characterData.GrowingStat();
         NotControlHero();
     }
 
@@ -84,11 +86,6 @@ public class HeroPresenter : MonoBehaviour
         return characterData.hp;
     }
 
-    public void SetStat(int hp, int atk)
-    {
-        characterData.hp = hp;
-        characterData.attack = atk;
-    }
 
 
 }

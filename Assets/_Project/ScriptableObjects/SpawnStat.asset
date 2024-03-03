@@ -16,9 +16,11 @@ MonoBehaviour:
   maxHeroHp: 1000
   minHeroAtk: 10
   maxHeroAtk: 100
-  growingCoefficientHeroStats: 0.1
+  growingHpHeroStat: 0.013
+  growingAtkHeroStat: 0.013
   minEnemyHp: 100
   maxEnemyHp: 1000
   minEnemyAtk: 10
   maxEnemyAtk: 100
-  growingCoefficientEnemyStats: 0.1
+  growingHpEnemyStat: 0.02
+  growingAtkEnemyStat: 0.02

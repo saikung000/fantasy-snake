@@ -11,31 +11,27 @@ public class SpawnStatScriptableObject : ScriptableObject
     public int maxHeroHp = 100;
     public int minHeroAtk = 20;
     public int maxHeroAtk = 20;
-    public float growingCoefficientHeroStats = 0.5f;
+    public float growingHpHeroStat = 0.5f;
+    public float growingAtkHeroStat = 0.5f;
 
     [Header("Enemy")]
     public int minEnemyHp = 100;
     public int maxEnemyHp = 100;
     public int minEnemyAtk = 20;
     public int maxEnemyAtk = 20;
-    public float growingCoefficientEnemyStats = 0.5f;
+    public float growingHpEnemyStat = 0.5f;
+    public float growingAtkEnemyStat = 0.5f;
 
 
-    public (int hp, int atk) RandomHeroStat(int level)
+    public CharacterData CreateHeroStat()
     {
-        float growingStats = 1 + growingCoefficientHeroStats * (level - 1);
-        int hp = Mathf.Clamp(Mathf.CeilToInt(minHeroHp * growingStats), minHeroHp, maxHeroHp);
-        int atk = Mathf.Clamp(Mathf.CeilToInt(minHeroAtk * growingStats), minHeroAtk, maxHeroAtk);
-        return (hp, atk);
+        return new CharacterData(minHeroHp, minHeroAtk, maxHeroHp, maxHeroAtk, growingHpHeroStat, growingAtkHeroStat);
     }
 
-    public (int hp, int atk) RandomEnemyStat(int level)
+    public CharacterData CreateEnemyStat()
     {
 
-        float growingStats = 1 + growingCoefficientEnemyStats * (level - 1);
-        int hp = Mathf.Clamp(Mathf.CeilToInt(minEnemyHp * growingStats), minEnemyHp, maxEnemyHp);
-        int atk = Mathf.Clamp(Mathf.CeilToInt(minEnemyAtk * growingStats), minEnemyAtk, maxEnemyAtk);
-        return (hp, atk);
+        return new CharacterData(minEnemyHp, minEnemyAtk, maxEnemyHp, maxEnemyAtk, growingHpEnemyStat, growingAtkEnemyStat);
     }
 }
 
