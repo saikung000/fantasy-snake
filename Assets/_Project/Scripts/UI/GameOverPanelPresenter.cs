@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameOverPanelPresenter : MonoBehaviour
@@ -19,7 +20,11 @@ public class GameOverPanelPresenter : MonoBehaviour
         GameManager.Instance.onGameStatsChange += (state) =>
        {
            panel.SetActive(state == GameState.GameOver);
-           scoreText.text = "Score : " + gameManager.score;
+           if (state == GameState.GameOver)
+           {
+               scoreText.text = "Score : " + gameManager.score;
+               EventSystem.current.SetSelectedGameObject(this.restartButton.gameObject);
+           }
        };
 
         restartButton.onClick.AddListener(() =>

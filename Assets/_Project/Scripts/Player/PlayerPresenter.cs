@@ -11,6 +11,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
     [SerializeField] private PlayerData playerData;
 
     public Action<HeroPresenter> onChangeControlHero;
+    public Action onPlayerMove;
 
 
     void Start()
@@ -41,9 +42,21 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         {
             Move(type);
         }
-        else if (hit.CompareTag("Obstacle") || hit.CompareTag("Hero"))
+        else if (hit.CompareTag("Hero"))
         {
             GameManager.Instance.GameOver();
+        }
+        else if (hit.CompareTag("Obstacle"))
+        {
+            if (playerData.collectedHero.Count() == 1)
+            {
+                GameManager.Instance.GameOver();
+            }
+            else
+            {
+                NextHero();
+                Destroy(playerData.RemoveLastHero().gameObject);
+            }
         }
         else if (hit.CompareTag("CollectHero"))
         {
@@ -61,6 +74,8 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         {
             Move(type);
         }
+
+        onPlayerMove?.Invoke();
     }
 
     private void Attack(DirectionType type, EnemyPresenter enemyPresenter)
