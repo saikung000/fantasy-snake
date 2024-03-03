@@ -49,7 +49,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         {
             HeroPresenter heroPresenter = hit.GetComponent<HeroPresenter>();
             CollectHero(type, heroPresenter);
-            MapSpawnerView.Instance.SpawnNewCollectHero();
+            MapSpawnerManager.Instance.SpawnNewCollectHero();
 
         }
         else if (hit.CompareTag("Enemy"))
@@ -92,7 +92,7 @@ public class PlayerPresenter : MonoInstance<PlayerPresenter>
         heroPresenter.MoveToFollowTarget(playerData.collectedHero.Last());
         playerData.AddHero(heroPresenter);
         heroPresenter.transform.SetParent(transform);
-        MapSpawnerView.Instance.RemoveCollectHero(heroPresenter);
+        MapSpawnerManager.Instance.RemoveCollectHero(heroPresenter);
     }
 
     private void Move(DirectionType type)

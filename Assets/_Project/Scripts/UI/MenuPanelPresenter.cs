@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuPanelView : MonoBehaviour
+public class MenuPanelPresenter : MonoBehaviour
 {
     [SerializeField]
     private GameObject panel;

@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class MapSpawnerView : MonoSingleton<MapSpawnerView>
+public class MapSpawnerManager : MonoSingleton<MapSpawnerManager>
 {
     public int gridX = 16, gridZ = 16;
     [SerializeField] private SetupMapScriptableObject setupMapSpawn;

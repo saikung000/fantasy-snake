@@ -21,7 +21,7 @@ public class GameManager : MonoInstance<GameManager>
         gameState = GameState.Gameplay;
         score = 0;
         PlayerPresenter.Instance.Reset();
-        MapSpawnerView.Instance.SetupGame();
+        MapSpawnerManager.Instance.SetupGame();
         onGameStatsChange?.Invoke(gameState);
     }
 

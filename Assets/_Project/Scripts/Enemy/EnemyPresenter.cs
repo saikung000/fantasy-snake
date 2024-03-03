@@ -41,10 +41,10 @@ public class EnemyPresenter : MonoBehaviour
         characterData.TakeDamage(damage);
         if (characterData.hp <= 0)
         {
-            MapSpawnerView.Instance.RemoveEnemy(this);
+            MapSpawnerManager.Instance.RemoveEnemy(this);
             GameManager.Instance.AddScore(1);
             Destroy(this.gameObject);
-            MapSpawnerView.Instance.SpawnNewEnemy();
+            MapSpawnerManager.Instance.SpawnNewEnemy();
         }
     }
 

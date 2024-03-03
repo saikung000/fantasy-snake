@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameOverPaneView : MonoBehaviour
+public class GameOverPanelPresenter : MonoBehaviour
 {
     [SerializeField]
     private GameObject panel;
